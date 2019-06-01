@@ -6,10 +6,8 @@ var movement = {
     left: false,
     right: false
 }
-document.addEventListener('keydown', function (event)
-{
-    switch (event.keyCode)
-    {
+document.addEventListener('keydown', function (event) {
+    switch (event.keyCode) {
         case 65: // A
             movement.left = true;
             break;
@@ -34,14 +32,16 @@ document.addEventListener('keydown', function (event)
         case 40: // Aşağı
             socket.emit('shoot', 'down');
             break;
+        case 13:
+            YeniOyuncu();
+            break;
+
     }
 });
 
 
-document.addEventListener('keyup', function (event)
-{
-    switch (event.keyCode)
-    {
+document.addEventListener('keyup', function (event) {
+    switch (event.keyCode) {
         case 65: // A
             movement.left = false;
             break;
@@ -57,25 +57,35 @@ document.addEventListener('keyup', function (event)
     }
 });
 
-function YeniOyuncu()
-{
+YeniOyuncu();
+
+setInterval(() => {
+    socket.emit('movement', movement);
+}, 1000 / 60);
+
+
+function YeniOyuncu() {
     socket.emit('new player');
-    setInterval(() =>
-    {
-        socket.emit('movement', movement);
-    }, 1000 / 60);
 }
 
 var canvas = document.getElementById('canvas');
-canvas.width = 800;
-canvas.height = 600;
+
 var context = canvas.getContext('2d');
-socket.on('state', function (players)
-{
+
+window.addEventListener('resize', resizeCanvas, false);
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+}
+
+socket.on('state', function (players) {
+    context.canvas.width = window.innerWidth;
+    context.canvas.height = window.innerHeight;
     context.fillStyle = 'black';
-    context.fillRect(0, 0, 800, 600);
-    for (var id in players)
-    {
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    for (var id in players) {
         context.fillStyle = "#3366ff";
         var player = players[id];
         context.fillRect(player.x, player.y, 40, 40);

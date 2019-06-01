@@ -57,19 +57,19 @@ io.on('connection', (socket) =>
         var player = players[socket.id] || {};
         if (!player.projectile) player.projectile = {};
         if (player.projectile.time > 0) return;
-        if (data == 'left')
+        if (data === 'left')
         {
             player.projectile.direction = 'left';
         }
-        if (data == 'up')
+        if (data === 'up')
         {
             player.projectile.direction = 'up';
         }
-        if (data == 'right')
+        if (data === 'right')
         {
             player.projectile.direction = 'right';
         }
-        if (data == 'down')
+        if (data === 'down')
         {
             player.projectile.direction = 'down';
         }
@@ -87,7 +87,7 @@ function CarpismaKontrol(oyuncu)
     for (id in players) 
     {
         var player = players[id];
-        if(oyuncu == player) continue;
+        if(oyuncu === player) continue;
         if((proj.x >= player.x && proj.x <= player.x + 40) && (proj.y >= player.y && proj.y <= player.y + 40))
         {
             proj.time = 0;
